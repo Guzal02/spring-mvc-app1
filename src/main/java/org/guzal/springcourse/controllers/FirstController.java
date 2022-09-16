@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/first")
@@ -24,5 +24,35 @@ public class FirstController {
     @GetMapping("/goodbye")
     public String goodByePage() {
         return "first/goodbye";
+    }
+
+    @GetMapping("/calculator")
+    public String calculatorPage(@RequestParam(value = "a", required = false) int a,
+                                 @RequestParam(value = "b", required = false) int b,
+                                 @RequestParam(value = "action", required = false) String action,
+                                 Model model) {
+        double answer;
+
+        switch (action) {
+            case "multiplication":
+                answer = a * b;
+                break;
+            case "division":
+                answer = a / (double) b;
+                break;
+            case "subtraction":
+                answer = a - b;
+                break;
+            case "addition":
+                answer = a + b;
+                break;
+            default:
+                answer = 0;
+                break;
+        }
+
+        model.addAttribute("answer", answer);
+
+        return "first/calculator";
     }
 }
